@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animations/screens/login/widgets/form_container.dart';
 import 'package:flutter_animations/screens/login/widgets/sign_up_button.dart';
+import 'package:flutter_animations/screens/login/widgets/stagger_animation.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
@@ -22,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-
   @override
   void dispose() {
     _animationController.dispose();
@@ -42,6 +42,7 @@ class _LoginScreenState extends State<LoginScreen>
           padding: EdgeInsets.zero,
           children: [
             Stack(
+              alignment: Alignment.bottomCenter,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +59,10 @@ class _LoginScreenState extends State<LoginScreen>
                     FormContainer(),
                     SignUpButton()
                   ],
-                )
+                ),
+                StaggerAnimation(
+                  controller: _animationController.view
+                ),
               ],
             )
           ],
