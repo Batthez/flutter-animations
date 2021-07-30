@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animations/screens/home/home_screen.dart';
 import 'package:flutter_animations/screens/login/login_screen.dart';
 
 void main() {
