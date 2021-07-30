@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class StaggerAnimation extends StatelessWidget {
-
   final AnimationController controller;
 
   /*
@@ -10,17 +9,34 @@ class StaggerAnimation extends StatelessWidget {
    * Interval utilizado para dizer em qual tempo inicia e termina a animação
    * seu valor é em porcentagem.
    */
-  StaggerAnimation({this.controller}) : buttonSqueeze = Tween(
-    begin: 320.0,
-    end: 60.0,
-  ).animate(
-    CurvedAnimation(parent: controller, curve: Interval(0.0, 0.150))
-  );
+  StaggerAnimation({this.controller})
+      : buttonSqueeze = Tween(
+          begin: 320.0,
+          end: 60.0,
+        ).animate(CurvedAnimation(
+          parent: controller,
+          curve: Interval(
+            0.0,
+            0.150,
+          ),
+        )),
+        buttonZoomOut = Tween(begin: 60.0, end: 1000.0).animate(CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.5,
+              1,
+              curve: Curves.bounceOut,
+            )));
 
   /*
    * Animação double para animar largura do botão
    */
   final Animation<double> buttonSqueeze;
+
+  /*
+   *
+   */
+  final Animation<double> buttonZoomOut;
 
   Widget _buildAnimation(BuildContext context, Widget child) {
     return Padding(
@@ -31,42 +47,48 @@ class StaggerAnimation extends StatelessWidget {
         onTap: () {
           controller.forward();
         },
-        child: Container(
-          width: buttonSqueeze.value,
-          height: 60,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: Color.fromRGBO(247, 64, 186, 1.0),
-              borderRadius: BorderRadius.all(Radius.circular(30.0))),
-          child: _buildInside(context),
-          ),
-        ),
-      );
+        child: buttonZoomOut.value <= 60
+            ? Container(
+                width: buttonSqueeze.value,
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(247, 64, 186, 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                child: _buildInside(context),
+              )
+            : Container(
+                width: buttonZoomOut.value,
+                height: buttonZoomOut.value,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(247, 64, 186, 1.0),
+                    shape: buttonZoomOut.value < 500
+                        ? BoxShape.circle
+                        : BoxShape.rectangle),
+              ),
+      ),
+    );
   }
-
 
   /*
   * Método que controla o conteúdo dentro do botão de signIn.
   */
-  Widget _buildInside(BuildContext context){
-      if(buttonSqueeze.value > 75){
-        return Text(
-            "Sign In",
-            style: TextStyle(
+  Widget _buildInside(BuildContext context) {
+    if (buttonSqueeze.value > 75) {
+      return Text(
+        "Sign In",
+        style: TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w300,
-            letterSpacing: 0.3
-          ),
-        );
-      }else{
-        return CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(
-            Colors.white
-          ),
-          strokeWidth: 1.0,
-        );
-      }
+            letterSpacing: 0.3),
+      );
+    } else {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        strokeWidth: 1.0,
+      );
+    }
   }
 
   @override
