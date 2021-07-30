@@ -34,7 +34,7 @@ class StaggerAnimation extends StatelessWidget {
   final Animation<double> buttonSqueeze;
 
   /*
-   *
+   *  Animação final do botão
    */
   final Animation<double> buttonZoomOut;
 
